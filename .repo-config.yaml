@@ -1,0 +1,14 @@
+# See https://docs.github.com/graphql/reference/objects#repository for the
+# GraphQL names of repo settings and https://docs.github.com/rest/reference/repos#update-a-repository
+# for the REST names of repo settings.
+
+settings:
+  deleteBranchOnMerge:
+    restName: delete_branch_on_merge
+    value: true
+  mergeCommitAllowed:
+    restName: allow_merge_commit
+    value: true
+  hasWikiEnabled:
+    restName: has_wiki
+    value: false
