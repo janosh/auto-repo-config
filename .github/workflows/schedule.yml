@@ -1,0 +1,20 @@
+name: Auto Repo Config
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['**.py', '.repo-config.yaml'] # only run workflow when source or config files changed
+  schedule:
+    - cron: '0 10 * * 0' # at 10:00 UTC every Sunday (https://crontab.guru)
+
+jobs:
+  build:
+    name: Config Repos
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+    - run: pip install pyyaml requests && python auto_repo_config.py
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}

@@ -1,6 +1,6 @@
 # Auto Repo Settings
 
-[![Tests](https://github.com/janosh/auto-repo-config/workflows/main/badge.svg)](https://github.com/janosh/auto-repo-config/actions)
+[![Tests](https://github.com/janosh/auto-repo-config/workflows/Auto%20Repo%20Config/badge.svg)](https://github.com/janosh/auto-repo-config/actions)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/janosh/auto-repo-config/main.svg)](https://results.pre-commit.ci/latest/github/janosh/auto-repo-config/main)
 [![License](https://img.shields.io/github/license/janosh/auto-repo-config?label=License)](/license)
 

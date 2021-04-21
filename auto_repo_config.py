@@ -76,18 +76,23 @@ def construct_gql_query(settings: List[str], affil: str = "OWNER") -> str:
 
 def main() -> int:
     with open(".repo-config.yaml") as file:
-        config = yaml.load(file.read())
+        config = yaml.safe_load(file.read())
 
     query = construct_gql_query(config["settings"].keys())
 
     repos = query_gh_gpl_api(query)["viewer"]["repositories"]["nodes"]
 
+    count = 0
+
     for repo in repos:
-        # skip repos whose settings already conform to the config
+        # skip archived repos
+        if repo["isArchived"]:
+            continue
+        # also skip repos whose settings already conform to the config
         if all(dic["value"] == repo[key] for key, dic in config["settings"].items()):
             continue
 
-        print(f"processing {repo['nameWithOwner']}... ", end="", flush=True)
+        print(f"processing {repo['nameWithOwner']}... ")
 
         requests.patch(
             f"https://api.github.com/repos/{repo['nameWithOwner']}",
@@ -99,9 +104,15 @@ def main() -> int:
 
         for key, dic in config["settings"].items():
             if dic["value"] != repo[key]:
-                print(f"changed {key} to {dic['value']}\t", end="")
+                print(f"  - changed {key} to {dic['value']}\t")
 
-        print("", flush=True)
+        print("")
+        count += 1
+
+    if count == 0:
+        print("Nothing to do, all repos already conformed to config.")
+    else:
+        print(f"Done! Modified settings on {count:,} repos.")
 
     return 0
 
