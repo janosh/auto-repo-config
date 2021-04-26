@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import os
 from typing import List
 
@@ -94,6 +93,7 @@ def main() -> int:
 
         print(f"processing {repo['nameWithOwner']}... ")
 
+        # send patch request to GitHub REST API to update repo settings
         requests.patch(
             f"https://api.github.com/repos/{repo['nameWithOwner']}",
             # see https://docs.github.com/en/rest/reference/repos

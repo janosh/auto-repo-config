@@ -8,7 +8,7 @@ settings:
     value: true
   mergeCommitAllowed:
     restName: allow_merge_commit
-    value: true
+    value: false
   hasWikiEnabled:
     restName: has_wiki
     value: false
