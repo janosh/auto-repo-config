@@ -3,6 +3,7 @@
 # for the REST names of repo settings.
 
 skipForks: true
+orgs: [sbsev] # list of org logins whose repos should be configured
 settings:
   deleteBranchOnMerge:
     restName: delete_branch_on_merge

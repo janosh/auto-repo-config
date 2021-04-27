@@ -43,6 +43,13 @@ def query_gh_gpl_api(query: str) -> dict:
         return response["data"]
 
 
+def pretty_print(dic: dict) -> None:
+    """Pretty print a dictionary in YAML format.
+    Useful for development and debugging.
+    """
+    print(yaml.dump(dic))
+
+
 def construct_gql_query(settings: List[str], affil: str = "OWNER") -> str:
     """Construct GraphQL query from settings list.
 
@@ -56,17 +63,31 @@ def construct_gql_query(settings: List[str], affil: str = "OWNER") -> str:
         str: GraphQL query.
     """
     return """{
-        viewer {
-            repositories(first: 100, affiliations: [{affil}]) {
-                nodes {
-                    name
-                    nameWithOwner
-                    isArchived
-                    isFork
-                    {settings}
-                }
-            }
+      viewer {
+        repositories(first: 100, affiliations: [{affil}]) {
+          nodes {
+            name
+            nameWithOwner
+            isArchived
+            isFork
+            {settings}
+          }
         }
+        organizations(first: 100) {
+          nodes {
+            login
+            repositories(first: 100) {
+              nodes {
+                name
+                nameWithOwner
+                isArchived
+                isFork
+                {settings}
+              }
+            }
+          }
+        }
+      }
     }""".replace(
         "{settings}", "\n".join(settings)
     ).replace(
@@ -74,13 +95,36 @@ def construct_gql_query(settings: List[str], affil: str = "OWNER") -> str:
     )
 
 
+default_config = {"skipForks": True, "orgs": [], "settings": {}}
+
+
 def main() -> int:
     with open(".repo-config.yaml") as file:
-        config = yaml.safe_load(file.read())
+        config = {**default_config, **yaml.safe_load(file.read())}
 
     query = construct_gql_query(config["settings"].keys())
 
-    repos = query_gh_gpl_api(query)["viewer"]["repositories"]["nodes"]
+    result = query_gh_gpl_api(query)
+
+    repos = result["viewer"]["repositories"]["nodes"]
+    orgs = result["viewer"]["organizations"]["nodes"]
+
+    accessible_org_logins = [d["login"] for d in orgs]
+
+    for org_login in config["orgs"]:
+        if org_login not in accessible_org_logins:
+            print(
+                f"Warning: The 'orgs' key in .repo-config.yaml includes '{org_login}' "
+                "but you do not seem to have access to that org. Accessible "
+                f"orgs are {accessible_org_logins}."
+            )
+
+    # We first query for all org repos and then do the filtering based on orgs
+    # specified in repo-config.yaml so that we only need one request to the GQL API.
+    for org in orgs:
+        if org["login"] in config["orgs"]:
+            org_repos = org["repositories"]["nodes"]
+            repos.extend(org_repos)
 
     count = 0
 
@@ -114,9 +158,9 @@ def main() -> int:
         count += 1
 
     if count == 0:
-        print("Nothing to do, all repos already conformed to config.")
+        print("\nNothing to do, all repos already conformed to config.")
     else:
-        print(f"Done! Modified settings on {count:,} repos.")
+        print(f"\nDone! Modified settings on {count:,} repos.")
 
     return 0
 
