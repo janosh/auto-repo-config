@@ -62,6 +62,7 @@ def construct_gql_query(settings: List[str], affil: str = "OWNER") -> str:
                     name
                     nameWithOwner
                     isArchived
+                    isFork
                     {settings}
                 }
             }
@@ -87,8 +88,11 @@ def main() -> int:
         # skip archived repos
         if repo["isArchived"]:
             continue
-        # also skip repos whose settings already conform to the config
+        # skip repos whose settings already conform to the config
         if all(dic["value"] == repo[key] for key, dic in config["settings"].items()):
+            continue
+        # skip forked repos if config says so
+        if config["skipForks"] and repo["isFork"]:
             continue
 
         print(f"processing {repo['nameWithOwner']}... ")

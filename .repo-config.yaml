@@ -2,6 +2,7 @@
 # GraphQL names of repo settings and https://docs.github.com/rest/reference/repos#update-a-repository
 # for the REST names of repo settings.
 
+skipForks: true
 settings:
   deleteBranchOnMerge:
     restName: delete_branch_on_merge
