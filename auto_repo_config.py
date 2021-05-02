@@ -4,6 +4,7 @@ from typing import List
 import requests
 import yaml
 
+
 if os.path.exists("gh_token.py"):
     from gh_token import GH_TOKEN
 else:
