@@ -4,6 +4,7 @@ from typing import List
 import requests
 import yaml
 
+
 if os.path.exists("gh_token.py"):
     from gh_token import GH_TOKEN
 else:
@@ -50,7 +51,7 @@ def pretty_print(dic: dict) -> None:
     print(yaml.dump(dic))
 
 
-def construct_gql_query(settings: List[str], affil: str = "OWNER") -> str:
+def get_gql_query(settings: List[str], affil: str = "OWNER") -> str:
     """Construct GraphQL query from settings list.
 
     Args:
@@ -102,7 +103,7 @@ def main() -> int:
     with open(".repo-config.yaml") as file:
         config = {**default_config, **yaml.safe_load(file.read())}
 
-    query = construct_gql_query(config["settings"].keys())
+    query = get_gql_query(config["settings"].keys())
 
     result = query_gh_gpl_api(query)
 
@@ -154,7 +155,7 @@ def main() -> int:
             if dic["value"] != repo[key]:
                 print(f"  - changed {key} to {dic['value']}\t")
 
-        print("")
+        print()
         count += 1
 
     if count == 0:
