@@ -10,16 +10,16 @@ on:
 
 jobs:
   config:
-    name: Configure Repos
+    name: Configure repos
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Repo
+    - name: Checkout repo
       uses: actions/checkout@v2
 
     - name: Setup Python
       uses: actions/setup-python@v2
 
-    - name: Install Dependencies
+    - name: Install dependencies
       run: pip install pyyaml requests
 
     - name: Run auto_repo_config.py

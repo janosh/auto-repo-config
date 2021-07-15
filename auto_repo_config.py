@@ -1,5 +1,5 @@
 import os
-from typing import List
+from typing import Dict, List, Tuple, Union
 
 import requests
 import yaml
@@ -51,11 +51,12 @@ def pretty_print(dic: dict) -> None:
     print(yaml.dump(dic))
 
 
-def get_gql_query(settings: List[str], affil: str = "OWNER") -> str:
+def get_gql_query(settings: str, affil: str = "OWNER") -> str:
     """Construct GraphQL query from settings list.
 
     Args:
-        settings (list[str]): Names of repo settings according to the GraphQL API.
+        settings (str): Names of repo settings according to the GraphQL API,
+            separated by new lines. Use '\n'.join(settings_list).
         affil (str, optional): Comma-separated string of author affiliations to their
             repos. One or several of OWNER, COLLABORATOR, ORGANIZATION_MEMBER.
             Defaults to "OWNER".
@@ -90,7 +91,7 @@ def get_gql_query(settings: List[str], affil: str = "OWNER") -> str:
         }
       }
     }""".replace(
-        "{settings}", "\n".join(settings)
+        "{settings}", settings
     ).replace(
         "{affil}", affil
     )
@@ -99,11 +100,19 @@ def get_gql_query(settings: List[str], affil: str = "OWNER") -> str:
 default_config = {"skipForks": True, "orgs": [], "settings": {}}
 
 
-def main() -> int:
-    with open(".repo-config.yaml") as file:
-        config = {**default_config, **yaml.safe_load(file.read())}
+def load_config() -> Tuple[Dict[str, Dict[str, Union[str, bool]]], List[str], bool]:
 
-    query = get_gql_query(config["settings"].keys())
+    with open(".repo-config.yaml") as file:
+        config = yaml.safe_load(file.read())
+
+    return config["settings"] or {}, config["orgs"] or [], config["skipForks"] or True
+
+
+def main() -> int:
+
+    settings, org_logins, skipForks = load_config()
+
+    query = get_gql_query("\n".join(settings.keys()))
 
     result = query_gh_gpl_api(query)
 
@@ -112,7 +121,7 @@ def main() -> int:
 
     accessible_org_logins = [d["login"] for d in orgs]
 
-    for org_login in config["orgs"]:
+    for org_login in org_logins:
         if org_login not in accessible_org_logins:
             print(
                 f"Warning: The 'orgs' key in .repo-config.yaml includes '{org_login}' "
@@ -123,7 +132,7 @@ def main() -> int:
     # We first query for all org repos and then do the filtering based on orgs
     # specified in repo-config.yaml so that we only need one request to the GQL API.
     for org in orgs:
-        if org["login"] in config["orgs"]:
+        if org["login"] in org_logins:
             org_repos = org["repositories"]["nodes"]
             repos.extend(org_repos)
 
@@ -134,10 +143,10 @@ def main() -> int:
         if repo["isArchived"]:
             continue
         # skip repos whose settings already conform to the config
-        if all(dic["value"] == repo[key] for key, dic in config["settings"].items()):
+        if all(dic["value"] == repo[key] for key, dic in settings.items()):
             continue
         # skip forked repos if config says so
-        if config["skipForks"] and repo["isFork"]:
+        if skipForks and repo["isFork"]:
             continue
 
         print(f"processing {repo['nameWithOwner']}... ")
@@ -147,11 +156,11 @@ def main() -> int:
             f"https://api.github.com/repos/{repo['nameWithOwner']}",
             # see https://docs.github.com/en/rest/reference/repos
             # for the names of repo settings
-            json={d["restName"]: d["value"] for d in config["settings"].values()},
+            json={d["restName"]: d["value"] for d in settings.values()},
             headers=headers,
         )
 
-        for key, dic in config["settings"].items():
+        for key, dic in settings.items():
             if dic["value"] != repo[key]:
                 print(f"  - changed {key} to {dic['value']}\t")
 
