@@ -20,9 +20,9 @@ jobs:
       uses: actions/setup-python@v2
 
     - name: Install dependencies
-      run: pip install pyyaml requests
+      run: pip install .
 
-    - name: Run auto_repo_config.py
-      run: python auto_repo_config.py
+    - name: Run auto-repo-config
+      run: python auto_repo_config/main.py
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
