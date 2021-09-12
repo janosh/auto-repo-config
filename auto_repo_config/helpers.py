@@ -105,7 +105,6 @@ def load_config(
     Returns:
         Tuple[Dict[str, Dict[str, Union[str, bool]]], List[str], bool]: [description]
     """
-
     config = {}
 
     if config_path and not os.path.exists(config_path):

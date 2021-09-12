@@ -22,7 +22,11 @@ headers = {"Authorization": f"token {GH_TOKEN}"}
 
 
 def main(argv: Sequence[str] = None) -> int:
+    """The auto-repo-config CLI interface.
 
+    Returns:
+        int: 0 if auto-repo-config exits successfully else error code.
+    """
     parser = ArgumentParser(
         "auto-repo-config",
         description="Periodically run a GitHub Action to change settings on your own "
@@ -109,4 +113,4 @@ def main(argv: Sequence[str] = None) -> int:
 
 
 if __name__ == "__main__":
-    exit(main())
+    raise SystemExit(main())
