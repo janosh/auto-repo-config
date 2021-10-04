@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['**.py', '.repo-config.yaml'] # only run workflow when source or config files changed
+    paths: ['**/*.py', '.repo-config.yaml'] # only run workflow when source or config files changed
   schedule:
     - cron: '0 10 * * 0' # at 10:00 UTC every Sunday (https://crontab.guru)
 

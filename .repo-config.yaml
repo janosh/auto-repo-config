@@ -1,5 +1,5 @@
-# See https://docs.github.com/graphql/reference/objects#repository for the
-# GraphQL names of repo settings and https://docs.github.com/rest/reference/repos#update-a-repository
+# See https://docs.github.com/graphql/reference/objects#repository for the GraphQL names
+# of repo settings and https://docs.github.com/rest/reference/repos#update-a-repository
 # for the REST names of repo settings.
 
 skipForks: true

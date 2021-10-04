@@ -1,5 +1,5 @@
 import os
-from typing import Dict, List, Tuple, Union
+from typing import Any
 
 import requests
 import yaml
@@ -97,13 +97,14 @@ def get_gql_query(settings: str, affil: str = "OWNER") -> str:
     )
 
 
-def load_config(
-    config_path: str = None,
-) -> Tuple[Dict[str, Dict[str, Union[str, bool]]], List[str], bool]:
+def load_config(config_path: str = None) -> tuple[dict[str, Any], list[str], bool]:
     """Load .repo-config.(yml|yaml).
 
     Returns:
-        Tuple[Dict[str, Dict[str, Union[str, bool]]], List[str], bool]: [description]
+        tuple[dict[str, Any], list[str], bool]:
+            - Dictionary of GitHub settings to apply to all your repos
+            - list of additional logins of your GitHub organizations to query for repos
+            - boolean whether or not apply settings to repos you forked as well
     """
     config = {}
 
