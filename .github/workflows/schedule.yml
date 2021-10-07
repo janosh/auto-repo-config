@@ -6,7 +6,7 @@ on:
     branches: [main]
     paths: ['**/*.py', '.repo-config.yaml'] # only run workflow when source or config files changed
   schedule:
-    - cron: '0 10 * * 0' # at 10:00 UTC every Sunday (https://crontab.guru)
+    - cron: '0 10 * * 0' # 10:00 UTC every Sunday
 
 jobs:
   config:
@@ -23,6 +23,6 @@ jobs:
       run: pip install .
 
     - name: Run auto-repo-config
-      run: python auto_repo_config/main.py
+      run: python auto_repo_config.py
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}

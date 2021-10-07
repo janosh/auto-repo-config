@@ -5,11 +5,7 @@ from typing import Sequence
 
 import requests
 
-from auto_repo_config.helpers import (
-    get_gql_query,
-    load_config,
-    query_gh_gpl_api,
-)
+from helpers import get_gql_query, load_config, query_gh_gpl_api
 
 
 if os.path.exists("gh_token.py"):
