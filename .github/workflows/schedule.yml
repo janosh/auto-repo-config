@@ -13,16 +13,19 @@ jobs:
     name: Configure repos
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v2
+      - name: Check out repo
+        uses: actions/checkout@v2
 
-    - name: Setup Python
-      uses: actions/setup-python@v2
+      - name: Set up python
+        uses: actions/setup-python@v2
+        with:
+          cache: pip
+          cache-dependency-path: setup.cfg
 
-    - name: Install dependencies
-      run: pip install .
+      - name: Install dependencies
+        run: pip install .
 
-    - name: Run auto-repo-config
-      run: python auto_repo_config.py
-      env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      - name: Run auto-repo-config
+        run: python auto_repo_config.py
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
