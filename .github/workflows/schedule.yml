@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['**/*.py', '.repo-config.yaml'] # only run workflow when source or config files changed
+    paths: ['**/*.py', .repo-config.yaml] # only run workflow when source or config files changed
   schedule:
     - cron: '0 10 * * 0' # 10:00 UTC every Sunday
 
@@ -17,10 +17,9 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set up python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
-          cache: pip
-          cache-dependency-path: setup.cfg
+          python-version: '3.10'
 
       - name: Install dependencies
         run: pip install .

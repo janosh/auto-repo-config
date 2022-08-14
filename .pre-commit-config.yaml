@@ -5,9 +5,6 @@ default_stages: [commit]
 
 default_install_hook_types: [pre-commit, commit-msg]
 
-default_language_version:
-  python: python3.9
-
 repos:
   - repo: https://github.com/PyCQA/isort
     rev: 5.10.1

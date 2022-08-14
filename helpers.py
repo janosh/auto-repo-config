@@ -51,14 +51,14 @@ def pretty_print(dic: dict) -> None:
     print(yaml.dump(dic))
 
 
-def get_gql_query(settings: str, affil: str = "OWNER") -> str:
+def get_gql_query(settings: str, affiliations: str = "OWNER") -> str:
     """Construct GraphQL query from settings list.
 
     Args:
         settings (str): Names of repo settings according to the GraphQL API,
             separated by new lines. Use '\n'.join(settings_list).
-        affil (str, optional): Comma-separated string of author affiliations to their
-            repos. One or several of OWNER, COLLABORATOR, ORGANIZATION_MEMBER.
+        affiliations (str, optional): Comma-separated string of author affiliations to
+            their repos. One or several of OWNER, COLLABORATOR, ORGANIZATION_MEMBER.
             Defaults to "OWNER".
 
     Returns:
@@ -66,7 +66,7 @@ def get_gql_query(settings: str, affil: str = "OWNER") -> str:
     """
     return """{
       viewer {
-        repositories(first: 100, affiliations: [{affil}]) {
+        repositories(first: 100, affiliations: [{affiliations}]) {
           nodes {
             name
             nameWithOwner
@@ -93,7 +93,7 @@ def get_gql_query(settings: str, affil: str = "OWNER") -> str:
     }""".replace(
         "{settings}", settings
     ).replace(
-        "{affil}", affil
+        "{affiliations}", affiliations
     )
 
 
