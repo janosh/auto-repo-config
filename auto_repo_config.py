@@ -1,7 +1,7 @@
 import os
 from argparse import ArgumentParser
+from collections.abc import Sequence
 from importlib.metadata import version
-from typing import Sequence
 
 import requests
 

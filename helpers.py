@@ -44,13 +44,6 @@ def query_gh_gpl_api(query: str) -> dict:
         return response["data"]
 
 
-def pretty_print(dic: dict) -> None:
-    """Pretty print a dictionary in YAML format.
-    Useful for development and debugging.
-    """
-    print(yaml.dump(dic))
-
-
 def get_gql_query(settings: str, affiliations: str = "OWNER") -> str:
     """Construct GraphQL query from settings list.
 
