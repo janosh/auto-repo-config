@@ -1,5 +1,5 @@
 # See https://docs.github.com/graphql/reference/objects#repository for the GraphQL names
-# of repo settings and https://docs.github.com/rest/reference/repos#update-a-repository
+# of repo settings and https://docs.github.com/rest/repos/repos
 # for the REST names of repo settings.
 
 skipForks: true
@@ -11,6 +11,9 @@ settings:
   mergeCommitAllowed:
     restName: allow_merge_commit
     value: false
+  autoMergeAllowed:
+    restName: allow_auto_merge
+    value: true
   hasWikiEnabled:
     restName: has_wiki
     value: false
