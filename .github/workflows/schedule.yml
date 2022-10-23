@@ -13,6 +13,8 @@ jobs:
   config:
     name: Configure repos
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
     steps:
       - name: Check out repo
         uses: actions/checkout@v3
@@ -30,5 +32,3 @@ jobs:
 
       - name: Run auto-repo-config
         run: python auto_repo_config.py
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
