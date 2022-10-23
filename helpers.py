@@ -93,6 +93,13 @@ def get_gql_query(settings: str, affiliations: str = "OWNER") -> str:
 def load_config(config_path: str = None) -> tuple[dict[str, Any], list[str], bool]:
     """Load .repo-config.(yml|yaml).
 
+    Args:
+        config_path (str, optional): Path to config file. Defaults to None.
+
+    Raises:
+        FileNotFoundError: If config_path does not exist or .repo-config.(yml|yaml) does
+            not exist in the current working directory.
+
     Returns:
         tuple[dict[str, Any], list[str], bool]:
             - Dictionary of GitHub settings to apply to all your repos
@@ -102,26 +109,22 @@ def load_config(config_path: str = None) -> tuple[dict[str, Any], list[str], boo
     config = {}
 
     if config_path and not os.path.exists(config_path):
-        raise FileNotFoundError(
-            f"Path to config file was set as '{config_path}' but no such file exists."
-        )
-    elif config_path:
-        with open(config_path) as file:
-            config = yaml.safe_load(file.read())
+        raise FileNotFoundError(f"{config_path=} does not exist.")
+    else:
+        for path in (".repo-config.yml", ".repo-config.yaml"):
+            if os.path.exists(path):
+                config_path = path
+        if not config_path:
+            raise FileNotFoundError(
+                "Could not find .repo-config.(yml|yaml) in the current directory. "
+                "Either create them or pass config path explicitly."
+            )
 
-    for path in (".repo-config.yml", ".repo-config.yaml"):
-        if os.path.exists(path):
-            with open(path) as file:
-                config = yaml.safe_load(file.read())
-
-    if config == {}:
-        raise ValueError(
-            "No config file could be found. See https://git.io/JWa5o for an example "
-            "config file. All fields except 'settings' are optional."
-        )
+    with open(config_path) as file:
+        config = yaml.safe_load(file.read())
 
     settings = config["settings"]
     orgs = config["orgs"] or []
-    skipForks = config["skipForks"] or True
+    skipForks = config.get("skipForks", True)
 
     return settings, orgs, skipForks
