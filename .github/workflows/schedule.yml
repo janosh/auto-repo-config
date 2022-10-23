@@ -5,6 +5,7 @@ on:
   push:
     branches: [main]
     paths: ['**/*.py', .repo-config.yaml] # only run workflow when source or config files changed
+  pull_request:
   schedule:
     - cron: '0 10 * * 0' # 10:00 UTC every Sunday
 
@@ -22,7 +23,10 @@ jobs:
           python-version: '3.10'
 
       - name: Install dependencies
-        run: pip install .
+        run: pip install '.[test]'
+
+      - name: Run tests
+        run: pytest
 
       - name: Run auto-repo-config
         run: python auto_repo_config.py
