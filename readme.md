@@ -1,6 +1,6 @@
 # Auto Repo Settings
 
-[![Scheduled Workflow](https://github.com/janosh/auto-repo-config/workflows/Auto%20Repo%20Config/badge.svg)](https://github.com/janosh/auto-repo-config/actions)
+[![Scheduled Workflow](https://github.com/janosh/auto-repo-config/actions/workflows/run.yml/badge.svg)](https://github.com/janosh/auto-repo-config/actions/workflows/run.yml)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/janosh/auto-repo-config/main.svg)](https://results.pre-commit.ci/latest/github/janosh/auto-repo-config/main)
 
 > Inspired by [`asottile/set-delete-branch-on-merge`](https://github.com/asottile/set-delete-branch-on-merge).
