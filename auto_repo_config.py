@@ -45,7 +45,7 @@ def main(argv: Sequence[str] = None) -> int:
 
     settings, org_logins, skipForks = load_config(args.config)
 
-    query = get_gql_query("\n".join(settings.keys()))
+    query = get_gql_query("\n".join(settings))
 
     result = query_gh_gpl_api(query)
 
