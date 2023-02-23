@@ -7,7 +7,6 @@ import requests
 
 from helpers import get_gql_query, load_config, query_gh_gpl_api
 
-
 if os.path.exists("gh_token.py"):
     from gh_token import GH_TOKEN
 else:

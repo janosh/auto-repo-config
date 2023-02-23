@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=61.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "auto-repo-config"
+version = "0.1.0"
+description = "Periodically run a GitHub Action to standardize certain settings across all repos."
+authors = [{ name = "Janosh Riebesell", email = "janosh.riebesell@gmail.com" }]
+license = { file = "license" }
+keywords = ["github", "action", "automatic", "repository", "configuration"]
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "License :: OSI Approved :: MIT License",
+]
+requires-python = ">=3.9"
+dependencies = ["requests", "pyyaml"]
+urls = { Homepage = "https://github.com/janosh/auto-repo-config" }
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.scripts]
+auto-repo-config = "auto_repo_config:main"
+
+[tool.mypy]
+check_untyped_defs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+[tool.ruff]
+target-version = "py39"
+line-length = 95
+select = [
+  "B",   # flake8-bugbear
+  "C4",  # flake8-comprehensions
+  "D",   # pydocstyle
+  "E",   # pycodestyle
+  "F",   # pyflakes
+  "I",   # isort
+  "PLE", # pylint error
+  "PLW", # pylint warning
+  "Q",   # flake8-quotes
+  "RUF", # Ruff-specific rules
+  "SIM", # flake8-simplify
+  "TID", # tidy imports
+  "UP",  # pyupgrade
+  "W",   # pycodestyle
+  "YTT", # flake8-2020
+]
+ignore = [
+  "C408", # Unnecessary dict call - rewrite as a literal
+  "D100", # Missing docstring in public module
+  "D104", # Missing docstring in public package
+  "D105", # Missing docstring in magic method
+  "D107", # Missing docstring in __init__
+  "D205", # 1 blank line required between summary line and description
+  "E731", # Do not assign a lambda expression, use a def
+]
+pydocstyle.convention = "google"
+
+[tool.ruff.per-file-ignores]
+"test_*" = ["D"]
