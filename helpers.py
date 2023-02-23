@@ -4,7 +4,6 @@ from typing import Any
 import requests
 import yaml
 
-
 if os.path.exists("gh_token.py"):
     from gh_token import GH_TOKEN
 else:
@@ -45,7 +44,7 @@ def query_gh_gpl_api(query: str) -> dict:
 
 
 def get_gql_query(settings: str, affiliations: str = "OWNER") -> str:
-    """Construct GraphQL query from settings list.
+    r"""Construct GraphQL query from settings list.
 
     Args:
         settings (str): Names of repo settings according to the GraphQL API,
