@@ -25,6 +25,9 @@ test = ["pytest"]
 [project.scripts]
 auto-repo-config = "auto_repo_config:main"
 
+[tool.setuptools.packages]
+find = {}
+
 [tool.mypy]
 check_untyped_defs = true
 disallow_untyped_defs = true
