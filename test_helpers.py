@@ -29,7 +29,6 @@ def test_query_gh_gpl_api() -> None:
 
 
 def test_get_gql_query() -> None:
-
     settings = [
         "name",
         "nameWithOwner",

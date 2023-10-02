@@ -1,5 +1,5 @@
 import os
-from typing import Any
+from typing import Any, Optional
 
 import requests
 import yaml
@@ -89,7 +89,9 @@ def get_gql_query(settings: str, affiliations: str = "OWNER") -> str:
     )
 
 
-def load_config(config_path: str = None) -> tuple[dict[str, Any], list[str], bool]:
+def load_config(
+    config_path: Optional[str] = None,
+) -> tuple[dict[str, Any], list[str], bool]:
     """Load .repo-config.(yml|yaml).
 
     Args:
