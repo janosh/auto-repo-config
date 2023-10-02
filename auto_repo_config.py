@@ -2,7 +2,6 @@ import os
 from argparse import ArgumentParser
 from collections.abc import Sequence
 from importlib.metadata import version
-from typing import Optional
 
 import requests
 
@@ -17,7 +16,7 @@ else:
 headers = {"Authorization": f"token {GH_TOKEN}"}
 
 
-def main(argv: Optional[Sequence[str]] = None) -> int:
+def main(argv: Sequence[str] | None = None) -> int:
     """The auto-repo-config CLI interface.
 
     Returns:
