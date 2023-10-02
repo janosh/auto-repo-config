@@ -8,15 +8,15 @@ version = "0.1.0"
 description = "Periodically run a GitHub Action to standardize certain settings across all repos."
 authors = [{ name = "Janosh Riebesell", email = "janosh.riebesell@gmail.com" }]
 license = { file = "license" }
-keywords = ["github", "action", "automatic", "repository", "configuration"]
+keywords = ["action", "automatic", "configuration", "github", "repository"]
 classifiers = [
-  "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
   "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.9",
 ]
-requires-python = ">=3.9"
-dependencies = ["requests", "pyyaml"]
+requires-python = ">=3.10"
+dependencies = ["pyyaml", "requests"]
 urls = { Homepage = "https://github.com/janosh/auto-repo-config" }
 
 [project.optional-dependencies]
@@ -36,15 +36,16 @@ warn_redundant_casts = true
 warn_unused_ignores = true
 
 [tool.ruff]
-target-version = "py39"
+target-version = "py310"
 line-length = 95
 select = [
   "B",   # flake8-bugbear
-  "C4",  # flake8-comprehensions
+  "C40", # flake8-comprehensions
   "D",   # pydocstyle
-  "E",   # pycodestyle
+  "E",   # pycodestyle error
   "F",   # pyflakes
   "I",   # isort
+  "PIE", # flake8-pie
   "PLE", # pylint error
   "PLW", # pylint warning
   "Q",   # flake8-quotes
@@ -52,7 +53,7 @@ select = [
   "SIM", # flake8-simplify
   "TID", # tidy imports
   "UP",  # pyupgrade
-  "W",   # pycodestyle
+  "W",   # pycodestyle warning
   "YTT", # flake8-2020
 ]
 ignore = [

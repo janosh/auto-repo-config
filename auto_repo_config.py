@@ -16,7 +16,7 @@ else:
 headers = {"Authorization": f"token {GH_TOKEN}"}
 
 
-def main(argv: Sequence[str] = None) -> int:
+def main(argv: Sequence[str] | None = None) -> int:
     """The auto-repo-config CLI interface.
 
     Returns:
