@@ -72,11 +72,11 @@ def test_load_config(tmp_path: Path, skip_forks: str) -> None:
         hasWikiEnabled:
             restName: has_wiki
             value: false
-    """
+    """,
     )
-    settings, orgs, skipForks = load_config(str(config_file))
+    settings, orgs, loaded_skip_forks = load_config(str(config_file))
 
-    assert str(skipForks).lower() == skip_forks
+    assert str(loaded_skip_forks).lower() == skip_forks
     assert orgs == ["super-secret-org"]
     assert settings["deleteBranchOnMerge"]["value"] is True
 

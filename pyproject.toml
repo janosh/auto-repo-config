@@ -37,35 +37,23 @@ warn_unused_ignores = true
 
 [tool.ruff]
 target-version = "py310"
-line-length = 95
-select = [
-  "B",   # flake8-bugbear
-  "C40", # flake8-comprehensions
-  "D",   # pydocstyle
-  "E",   # pycodestyle error
-  "F",   # pyflakes
-  "I",   # isort
-  "PIE", # flake8-pie
-  "PLE", # pylint error
-  "PLW", # pylint warning
-  "Q",   # flake8-quotes
-  "RUF", # Ruff-specific rules
-  "SIM", # flake8-simplify
-  "TID", # tidy imports
-  "UP",  # pyupgrade
-  "W",   # pycodestyle warning
-  "YTT", # flake8-2020
-]
+select = ["ALL"]
 ignore = [
-  "C408", # Unnecessary dict call - rewrite as a literal
-  "D100", # Missing docstring in public module
-  "D104", # Missing docstring in public package
-  "D105", # Missing docstring in magic method
-  "D107", # Missing docstring in __init__
-  "D205", # 1 blank line required between summary line and description
-  "E731", # Do not assign a lambda expression, use a def
+  "C408",   # Unnecessary dict call - rewrite as a literal
+  "D100",   # Missing docstring in public module
+  "D104",   # Missing docstring in public package
+  "D105",   # Missing docstring in magic method
+  "D107",   # Missing docstring in __init__
+  "D205",   # 1 blank line required between summary line and description
+  "E731",   # Do not assign a lambda expression, use a def
+  "EM",     # raw/f-string-in-exception
+  "PTH",    # Prefer pathlib over os.path
+  "S101",   # Use of assert detected
+  "T201",   # print found
+  "TRY003", # raise-vanilla-args
 ]
 pydocstyle.convention = "google"
 
 [tool.ruff.per-file-ignores]
-"test_*" = ["D"]
+# PLR2004 Magic value used in comparison
+"test_*" = ["D", "PLR2004"]

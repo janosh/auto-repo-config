@@ -33,14 +33,16 @@ def query_gh_gpl_api(query: str) -> dict:
         dict: The data returned by the API.
     """
     response = requests.post(
-        "https://api.github.com/graphql", json={"query": query}, headers=headers
+        "https://api.github.com/graphql",
+        json={"query": query},
+        headers=headers,
+        timeout=10,
     ).json()
 
     if "errors" in response:
         err = response["errors"][0]["message"]
-        raise Exception(f"Request failed with error '{err}'.")
-    else:
-        return response["data"]
+        raise requests.HTTPError(f"Request failed with error '{err}'.")
+    return response["data"]
 
 
 def get_gql_query(settings: str, affiliations: str = "OWNER") -> str:
@@ -83,9 +85,11 @@ def get_gql_query(settings: str, affiliations: str = "OWNER") -> str:
         }
       }
     }""".replace(
-        "{settings}", settings
+        "{settings}",
+        settings,
     ).replace(
-        "{affiliations}", affiliations
+        "{affiliations}",
+        affiliations,
     )
 
 
@@ -109,23 +113,22 @@ def load_config(
     """
     config = {}
 
-    if config_path and not os.path.exists(config_path):
+    if config_path and not os.path.isfile(config_path):
         raise FileNotFoundError(f"{config_path=} does not exist.")
-    else:
-        for path in (".repo-config.yml", ".repo-config.yaml"):
-            if os.path.exists(path):
-                config_path = path
-        if not config_path:
-            raise FileNotFoundError(
-                "Could not find .repo-config.(yml|yaml) in the current directory. "
-                "Either create them or pass config path explicitly."
-            )
+    for path in (".repo-config.yml", ".repo-config.yaml"):
+        if os.path.exists(path):
+            config_path = path
+    if not config_path:
+        raise FileNotFoundError(
+            "Could not find .repo-config.(yml|yaml) in the current directory. "
+            "Either create them or pass config path explicitly.",
+        )
 
     with open(config_path) as file:
         config = yaml.safe_load(file.read())
 
     settings = config["settings"]
     orgs = config["orgs"] or []
-    skipForks = config.get("skipForks", True)
+    skip_forks = config.get("skipForks", True)
 
-    return settings, orgs, skipForks
+    return settings, orgs, skip_forks

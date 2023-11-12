@@ -16,7 +16,7 @@ else:
 headers = {"Authorization": f"token {GH_TOKEN}"}
 
 
-def main(argv: Sequence[str] | None = None) -> int:
+def main(argv: Sequence[str] | None = None) -> int:  # noqa: C901
     """The auto-repo-config CLI interface.
 
     Returns:
@@ -37,12 +37,15 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     arc_version = version("auto-repo-config")
     parser.add_argument(
-        "-v", "--version", action="version", version=f"%(prog)s v{arc_version}"
+        "-v",
+        "--version",
+        action="version",
+        version=f"%(prog)s v{arc_version}",
     )
 
     args = parser.parse_args(argv)
 
-    settings, org_logins, skipForks = load_config(args.config)
+    settings, org_logins, skip_forks = load_config(args.config)
 
     query = get_gql_query("\n".join(settings))
 
@@ -58,7 +61,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(
                 f"Warning: The 'orgs' key in .repo-config.yaml includes '{org_login}' "
                 "but you do not seem to have access to that org. Accessible "
-                f"orgs are {accessible_org_logins}."
+                f"orgs are {accessible_org_logins}.",
             )
 
     # We first query for all org repos and then do the filtering based on orgs
@@ -78,7 +81,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         if all(dic["value"] == repo[key] for key, dic in settings.items()):
             continue
         # skip forked repos if config says so
-        if skipForks and repo["isFork"]:
+        if skip_forks and repo["isFork"]:
             continue
 
         print(f"processing {repo['nameWithOwner']}... ")
@@ -90,6 +93,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             # for the names of repo settings
             json={d["restName"]: d["value"] for d in settings.values()},
             headers=headers,
+            timeout=10,
         )
 
         for key, dic in settings.items():
