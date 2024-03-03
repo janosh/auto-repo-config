@@ -6,7 +6,7 @@ on:
     branches: [main]
   pull_request:
   schedule:
-    - cron: '0 10 * * 0' # 10:00 UTC every Sunday
+    - cron: "0 10 * * 0" # 10:00 UTC every Sunday
 
 jobs:
   config:
@@ -16,12 +16,12 @@ jobs:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
     steps:
       - name: Check out repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
       - name: Install dependencies
         run: pip install '.[test]'
